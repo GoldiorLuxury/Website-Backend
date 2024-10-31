@@ -4,6 +4,8 @@ dotenv.config();
 import dbconnect from "./db/dbconnect.js";
 import cookieParser from "cookie-parser";
 import productRoutes from './routes/product.routes.js'
+import orderRoutes from "./routes/orders.routes.js";
+
 // import recipeRoutes from './routes/recipe.routes.js'
 // import userRoutes from './routes/user.routes.js'
 
@@ -20,10 +22,9 @@ app.get('/', (req, res)=>{
 })
 
 app.use('/api/product', productRoutes)
+app.use('/api/order', orderRoutes)
 
-// app.use('/api/auth', authRoutes)
-// app.use('/api/recipe', recipeRoutes)
-// app.use('/api/user', userRoutes)
+
 
 
 

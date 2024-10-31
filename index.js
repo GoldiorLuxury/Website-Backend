@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import dbconnect from "./db/dbconnect.js";
 import cookieParser from "cookie-parser";
-// import authRoutes from './routes/auth.routes.js'
+import productRoutes from './routes/product.routes.js'
 // import recipeRoutes from './routes/recipe.routes.js'
 // import userRoutes from './routes/user.routes.js'
 
@@ -18,6 +18,8 @@ app.use(cookieParser())
 app.get('/', (req, res)=>{
     res.send(`server is ready on port ${PORT}`)
 })
+
+app.use('/api/product', productRoutes)
 
 // app.use('/api/auth', authRoutes)
 // app.use('/api/recipe', recipeRoutes)

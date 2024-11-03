@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import {mongoose} from "mongoose";
 
 // Define the address schema
 const addressSchema = new mongoose.Schema({
@@ -29,7 +29,7 @@ const addressSchema = new mongoose.Schema({
     zipcode: {
         type: String,
         required: true,
-    },
+    }
 });
 
 // Define the user schema
@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    password: {
+    gender: {
         type: String,
         required: true,
     },
@@ -57,9 +57,12 @@ const userSchema = new mongoose.Schema({
         default: false,
     },
     Addresses: [addressSchema],
+    favourites: {
+        type: [String],
+    }
 });
 
 // Create the user model
 const User = mongoose.model('User', userSchema);
 
-module.exports = User;
+export default User

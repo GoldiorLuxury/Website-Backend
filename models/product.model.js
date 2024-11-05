@@ -9,11 +9,6 @@ const productSchema = new Schema({
     categories: {
         type: [String], 
     },
-    gender: {
-        type: String,
-        enum: ['male', 'female'], // Restricts to 'male' or 'female'
-        required: true,
-    },
     capacityInML: {
         type: [Number], // Array of numbers representing capacities in ml
         required: true,
@@ -50,6 +45,10 @@ const productSchema = new Schema({
         type: Date,
         default: Date.now, // Automatically updates when the product is modified
     },
+    noOfOrders: {
+        type: Number,
+        default: 0
+    }
 });
 
 // Create the product model

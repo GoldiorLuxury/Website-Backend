@@ -4,8 +4,7 @@ const addProduct = async (req, res) => {
     try {
         const { 
             name, 
-            categories, 
-            gender, 
+            categories,  
             capacityInML, 
             stockLeft, 
             imgUrl, 
@@ -18,7 +17,6 @@ const addProduct = async (req, res) => {
         const newProduct = new Product({
             name,
             categories,
-            gender,
             capacityInML,
             stockLeft,
             imgUrl,
@@ -35,7 +33,6 @@ const addProduct = async (req, res) => {
             id: newProduct._id,
             name: newProduct.name,
             categories: newProduct.categories,
-            gender: newProduct.gender,
             capacityInML: newProduct.capacityInML,
             stockLeft: newProduct.stockLeft,
             imgUrl: newProduct.imgUrl,
@@ -82,4 +79,26 @@ const getProducts = async (req, res) => {
     }
 };
 
-export{ addProduct, getProducts};
+
+const getMostOrderedProducts = async (req, res) => {
+  try {
+    // You can specify the number of most ordered products you want to return
+    const limit = parseInt(req.query.limit) || 6; 
+    // Fetch and sort products by noOfOrders in descending order
+    const mostOrderedProducts = await Product.find()
+      .sort({ noOfOrders: -1 }) // Sort by noOfOrders in descending order
+      .limit(limit); // Limit the number of products returned
+
+    res.status(200).json({
+      products: mostOrderedProducts,
+    });
+  } catch (error) {
+    console.error("Error fetching most ordered products: ", error.message);
+    res.status(500).json({ error: `Internal server error: ${error.message}` });
+  }
+};
+
+
+
+
+export{ addProduct, getProducts, getMostOrderedProducts};

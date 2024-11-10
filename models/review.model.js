@@ -37,6 +37,9 @@ const reviewSchema = new Schema({
     type: String, 
     default: null, 
   },
+  isRecommended: {
+    type: Boolean
+  }
 });
 
 

@@ -9,6 +9,7 @@ import authRoutes from "./routes/auth.routes.js";
 import cartRoutes from "./routes/cart.routes.js"
 import reviewRoutes from "./routes/review.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import cors from 'cors'
 
 
 const PORT = process.env.PORT;
@@ -16,6 +17,12 @@ const app = express()
 app.use(express.json())
 
 app.use(cookieParser())
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 
 
 app.get('/', (req, res)=>{

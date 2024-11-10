@@ -1,53 +1,68 @@
 import Product from '../models/product.model.js'; 
+import mongoose from 'mongoose';
 
 const addProduct = async (req, res) => {
-    try {
-        const { 
-            name, 
-            categories,  
-            capacityInML, 
-            stockLeft, 
-            imgUrl, 
-            description, 
-            price, 
-            discountPercentage 
-        } = req.body;
+  try {
+    // Destructure all fields from the request body
+    const {
+      name,
+      categories,
+      keynotes,
+      capacityInML,
+      stockLeft,
+      imgUrl,
+      description,
+      description2,
+      description2heading,
+      price,
+      discountPercentage,
+    } = req.body;
 
-        // Create a new product instance
-        const newProduct = new Product({
-            name,
-            categories,
-            capacityInML,
-            stockLeft,
-            imgUrl,
-            description,
-            price,
-            discountPercentage
-        });
+    // Create a new product instance
+    const newProduct = new Product({
+      name,
+      categories,
+      keynotes, // Add keynotes field
+      capacityInML,
+      stockLeft,
+      imgUrl,
+      description,
+      description2, // Add description2 field
+      description2heading, // Add description2heading field
+      price,
+      discountPercentage,
+      noOfOrders: 0, // Initialize noOfOrders to 0
+      createdAt: new Date(), // Set the createdAt date
+      updatedAt: new Date(), // Set the updatedAt date
+    });
 
-        // Save the product to the database
-        await newProduct.save();
+    // Save the product to the database
+    await newProduct.save();
 
-        // Send back the saved product data in the response
-        res.status(201).json({
-            id: newProduct._id,
-            name: newProduct.name,
-            categories: newProduct.categories,
-            capacityInML: newProduct.capacityInML,
-            stockLeft: newProduct.stockLeft,
-            imgUrl: newProduct.imgUrl,
-            description: newProduct.description,
-            price: newProduct.price,
-            discountPercentage: newProduct.discountPercentage,
-            createdAt: newProduct.createdAt,
-            updatedAt: newProduct.updatedAt,
-        });
-
-    } catch (error) {
-        console.error("Error in product add controller: ", error.message);
-        res.status(500).json({ error: `Internal server error: ${error.message}` });
-    }
+    // Send back the saved product data in the response
+    res.status(201).json({
+      id: newProduct._id,
+      name: newProduct.name,
+      categories: newProduct.categories,
+      keynotes: newProduct.keynotes,
+      capacityInML: newProduct.capacityInML,
+      stockLeft: newProduct.stockLeft,
+      imgUrl: newProduct.imgUrl,
+      description: newProduct.description,
+      description2: newProduct.description2,
+      description2heading: newProduct.description2heading,
+      price: newProduct.price,
+      discountPercentage: newProduct.discountPercentage,
+      createdAt: newProduct.createdAt,
+      updatedAt: newProduct.updatedAt,
+      noOfOrders: newProduct.noOfOrders, // Include noOfOrders field in response
+    });
+  } catch (error) {
+    console.error("Error in product add controller: ", error.message);
+    res.status(500).json({ error: `Internal server error: ${error.message}` });
+  }
 };
+
 
 const getProducts = async (req, res) => {
     try {
@@ -98,7 +113,34 @@ const getMostOrderedProducts = async (req, res) => {
   }
 };
 
+const getProductById = async (req, res) => {
+  try {
+    // Extract the product ID from the URL parameter
+    const { productId } = req.params;
+
+    // Validate if productId is a valid MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      return res.status(400).json({ error: "Invalid product ID" });
+    }
+
+    // Fetch the product by its ID
+    const product = await Product.findById(productId);
+
+    // If product not found, return 404
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    // Return the product details
+    res.status(200).json({ product });
+  } catch (error) {
+    console.error("Error fetching product by ID: ", error.message);
+    res.status(500).json({ error: `Internal server error: ${error.message}` });
+  }
+};
 
 
 
-export{ addProduct, getProducts, getMostOrderedProducts};
+
+
+export{ addProduct, getProducts, getMostOrderedProducts, getProductById};

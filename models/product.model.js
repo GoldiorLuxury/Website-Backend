@@ -22,13 +22,14 @@ const productSchema = new Schema({
     validate: [arrayLimit, "{PATH} exceeds the limit of 3"], // Ensures the array has no more than 3 elements
   },
   capacityInML: {
-    type: [Number], // Array of numbers representing capacities in ml
+    type: [
+      {
+        quantity: { type: Number, required: true },
+        stockLeft: { type: Number, required: true, min: 0},
+        price: {type: Number, required: true}
+      },
+    ], // Array of numbers representing capacities in ml
     required: true,
-  },
-  stockLeft: {
-    type: Number,
-    required: true,
-    min: 0, // Ensures stock cannot be negative
   },
   imgUrl: {
     type: String,
@@ -43,11 +44,6 @@ const productSchema = new Schema({
   },
   description2heading: {
     type: String,
-  },
-  price: {
-    type: Number,
-    required: true,
-    min: 0, // Ensures price cannot be negative
   },
   discountPercentage: {
     type: Number,

@@ -7,29 +7,32 @@ const addProduct = async (req, res) => {
     const {
       name,
       categories,
-      keynotes,
-      capacityInML,
-      stockLeft,
+      keynotes, // Expecting an array of keynotes objects
+      capacityInML, // Array of objects with quantity, stockLeft, price
       imgUrl,
       description,
       description2,
       description2heading,
-      price,
-      discountPercentage,
+      discountPercentage = 0, // Default discount to 0 if not provided
     } = req.body;
+
+    // Validate discountPercentage range (between 0 and 100)
+    if (discountPercentage < 0 || discountPercentage > 100) {
+      return res
+        .status(400)
+        .json({ error: "Discount percentage must be between 0 and 100." });
+    }
 
     // Create a new product instance
     const newProduct = new Product({
       name,
       categories,
-      keynotes, // Add keynotes field
-      capacityInML,
-      stockLeft,
+      keynotes, // Array of keynotes objects
+      capacityInML, // Array of capacity objects (quantity, stockLeft, price)
       imgUrl,
       description,
-      description2, // Add description2 field
-      description2heading, // Add description2heading field
-      price,
+      description2,
+      description2heading,
       discountPercentage,
       noOfOrders: 0, // Initialize noOfOrders to 0
       createdAt: new Date(), // Set the createdAt date
@@ -46,12 +49,10 @@ const addProduct = async (req, res) => {
       categories: newProduct.categories,
       keynotes: newProduct.keynotes,
       capacityInML: newProduct.capacityInML,
-      stockLeft: newProduct.stockLeft,
       imgUrl: newProduct.imgUrl,
       description: newProduct.description,
       description2: newProduct.description2,
       description2heading: newProduct.description2heading,
-      price: newProduct.price,
       discountPercentage: newProduct.discountPercentage,
       createdAt: newProduct.createdAt,
       updatedAt: newProduct.updatedAt,
@@ -62,6 +63,7 @@ const addProduct = async (req, res) => {
     res.status(500).json({ error: `Internal server error: ${error.message}` });
   }
 };
+
 
 
 const getProducts = async (req, res) => {

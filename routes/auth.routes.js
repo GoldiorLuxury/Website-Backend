@@ -156,4 +156,22 @@ router.post("/create-user", async (req, res) => {
 });
 
 
+// Route to get user by email
+router.get("/get-user-by-email/:email", async (req, res) => {
+  const { email } = req.params;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (user) {
+      res.json(user); // Return user data
+    } else {
+      res.status(404).json({ message: "User not found" }); // If user not found
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching user" }); // Generic error message
+  }
+});
+
+
 export default router;

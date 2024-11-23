@@ -3,14 +3,14 @@ const addReview = async (req, res) => {
   try {
     // Destructure the fields from the request body
     const {
-      product_id,
-      user_id,
-      rating,
-      parent,
-      text,
-      img_url,
-      video_url,
-      isRecommended,
+        product_id,
+        user_id,
+        rating,
+        parent,
+        text,
+        img_url,
+        video_url,
+        isRecommended,
     } = req.body;
 
     // Create a new review object with all required fields

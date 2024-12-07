@@ -40,7 +40,7 @@ const sendOtpEmail = (email, otp) => {
       <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0;">
           <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
               <div style="text-align: center; margin-bottom: 20px;">
-                  <img src="https://via.placeholder.com/150" alt="Goldior Luxury Logo" style="width: 150px;">
+                  <img src="../goldior-logo.png" alt="Goldior Luxury Logo" style="width: 150px;">
               </div>
 
               <div style="font-size: 16px; color: #333; line-height: 1.6;">

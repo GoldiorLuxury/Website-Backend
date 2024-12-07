@@ -66,11 +66,12 @@ const sendOtpEmail = (email, otp) => {
       </html>
     `,
   };
-};
-
 
   return transporter.sendMail(mailOptions);
 };
+
+
+  
 
 
 router.post("/send-otp/:email", async (req, res) => {

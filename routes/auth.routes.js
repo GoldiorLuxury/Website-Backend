@@ -29,9 +29,45 @@ const sendOtpEmail = (email, otp) => {
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: email,
-    subject: "Your OTP Code",
-    text: `Your OTP code is ${otp}.`,
+    subject: "Your OTP for Account Verification",
+    html: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      </head>
+      <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0;">
+          <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+              <div style="text-align: center; margin-bottom: 20px;">
+                  <img src="https://via.placeholder.com/150" alt="Goldior Luxury Logo" style="width: 150px;">
+              </div>
+
+              <div style="font-size: 16px; color: #333; line-height: 1.6;">
+                  <p>Dear Customer,</p>
+                  <p>Thank you for choosing <strong>Goldior Luxury</strong>. To complete your verification, please use the One-Time Password (OTP) below:</p> <br />
+
+                  <div style="font-size: 24px; font-weight: bold; color: #2A7F72; margin: 10px 0; padding: 10px; background-color: #f2f8f3; border: 1px solid #2A7F72; border-radius: 5px; text-align: center;">
+                      ${otp}
+                  </div>
+
+                  <p>This code is valid for the next 10 minutes. Please do not share it with anyone.</p>
+
+                  <p>Warm regards,</p>
+                  <p><strong>Goldior Luxury</strong></p>
+              </div>
+
+              <div style="text-align: center; font-size: 14px; color: #888; margin-top: 20px;">
+                  <p>If you did not request this, please disregard this message.</p>
+                  <p>Visit our website: <a href="https://goldior-frontend.vercel.app" style="color: #2A7F72; text-decoration: none;">https://goldior-frontend.vercel.app</a></p>
+              </div>
+          </div>
+      </body>
+      </html>
+    `,
   };
+};
+
 
   return transporter.sendMail(mailOptions);
 };

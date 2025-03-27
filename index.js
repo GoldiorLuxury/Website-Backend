@@ -20,13 +20,21 @@ app.use(cookieParser())
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://goldior-frontend.vercel.app"],
+    origin: [
+      "http://localhost:5173",
+      "https://goldior-frontend.vercel.app",
+      "http://13.234.37.8:3000"  // <-- Add your Lightsail frontend IP
+    ],
+    credentials: true,  // Allow cookies if needed
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
   })
 );
 
 
-app.get('/', (req, res)=>{
-    res.send(`server is ready on port ${PORT}`)
+
+app.get('/', (req, res) => {
+  res.send(`server is ready on port ${PORT}`)
 })
 
 app.use('/api/product', productRoutes)
@@ -39,6 +47,7 @@ app.use("/api/user", userRoutes)
 
 
 
-app.listen(PORT, ()=>{
-    dbconnect();
-    console.log("listening at port "+`${PORT}`)})
+app.listen(PORT, () => {
+  dbconnect();
+  console.log("listening at port " + `${PORT}`)
+})

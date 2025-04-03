@@ -1,4 +1,4 @@
-import Product from '../models/product.model.js'; 
+import Product from '../models/product.model.js';
 import mongoose from 'mongoose';
 
 const addProduct = async (req, res) => {
@@ -67,40 +67,40 @@ const addProduct = async (req, res) => {
 
 
 const getProducts = async (req, res) => {
-    try {
-        const page = parseInt(req.query.page) || 1; 
-        const pageSize = 6; 
-        const skip = (page - 1) * pageSize;
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = 5;
+    const skip = (page - 1) * pageSize;
 
-        const products = await Product.find()
-            .skip(skip) 
-            .limit(pageSize);
+    const products = await Product.find()
+      .skip(skip)
+      .limit(pageSize);
 
-        const totalProducts = await Product.countDocuments();
+    const totalProducts = await Product.countDocuments();
 
-        const totalPages = Math.ceil(totalProducts / pageSize);
+    const totalPages = Math.ceil(totalProducts / pageSize);
 
-        res.status(200).json({
-            products,
-            pagination: {
-                currentPage: page,
-                totalPages,
-                totalProducts,
-                pageSize,
-            },
-        });
+    res.status(200).json({
+      products,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalProducts,
+        pageSize,
+      },
+    });
 
-    } catch (error) {
-        console.error("Error fetching products: ", error.message);
-        res.status(500).json({ error: `Internal server error: ${error.message}` });
-    }
+  } catch (error) {
+    console.error("Error fetching products: ", error.message);
+    res.status(500).json({ error: `Internal server error: ${error.message}` });
+  }
 };
 
 
 const getMostOrderedProducts = async (req, res) => {
   try {
     // You can specify the number of most ordered products you want to return
-    const limit = parseInt(req.query.limit) || 6; 
+    const limit = parseInt(req.query.limit) || 6;
     // Fetch and sort products by noOfOrders in descending order
     const mostOrderedProducts = await Product.find()
       .sort({ noOfOrders: -1 }) // Sort by noOfOrders in descending order
@@ -145,4 +145,4 @@ const getProductById = async (req, res) => {
 
 
 
-export{ addProduct, getProducts, getMostOrderedProducts, getProductById};
+export { addProduct, getProducts, getMostOrderedProducts, getProductById };

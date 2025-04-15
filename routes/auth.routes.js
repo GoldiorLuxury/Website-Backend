@@ -5,24 +5,26 @@ import User from "../models/user.model.js";
 import generateCookieAndSetToken from "../utils/generateToken.js";
 import { deleteOtp, getOtp, isOtpExpired, storeOtp } from "../utils/otpStore.js";
 
-const router = express.Router();  
+const router = express.Router();
 const otpMap = new Map(); // Store OTPs temporarily
 
-let otpStore = {}; 
+let otpStore = {};
 
 // Configure nodemailer
+
 const transporter = nodemailer.createTransport({
-    service: 'gmail', 
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS, 
-    },
+  host: 'smtpout.secureserver.net',
+  port: 465,
+  secure: true, // Use SSL/TLS if port is 465
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS, // The password from step 3
+  }
 });
 
 
-
 const generateOtp = () => {
-  return Math.floor(1000 + Math.random() * 9000); 
+  return Math.floor(1000 + Math.random() * 9000);
 };
 
 const sendOtpEmail = (email, otp) => {
@@ -40,7 +42,7 @@ const sendOtpEmail = (email, otp) => {
       <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0;">
           <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
               <div style="text-align: center; margin-bottom: 20px;">
-                  <img src="../goldior-logo.png" alt="Goldior Luxury Logo" style="width: 150px;">
+                  <img src="https://goldiorimages.s3.ap-south-1.amazonaws.com/goldior-logo.png" alt="Goldior Luxury Logo" style="width: 150px;">
               </div>
 
               <div style="font-size: 16px; color: #333; line-height: 1.6;">
@@ -67,11 +69,21 @@ const sendOtpEmail = (email, otp) => {
     `,
   };
 
-  return transporter.sendMail(mailOptions);
+  return transporter.sendMail(mailOptions)
+    .then((info) => {
+      console.log(`✅ Email sent successfully to ${email} from ${mailOptions.from}`);
+      console.log("SMTP Response:", info.response);
+      return info;
+    })
+    .catch((error) => {
+      console.error(`❌ Failed to send email to ${email} from ${mailOptions.from}`);
+      console.error("SMTP Error:", error);
+      throw error; // rethrow to be caught in your route
+    });
 };
 
 
-  
+
 
 
 router.post("/send-otp/:email", async (req, res) => {
@@ -82,7 +94,7 @@ router.post("/send-otp/:email", async (req, res) => {
     return res.status(400).json({ message: "Invalid email format" });
   }
 
-  const existingOtp = getOtp(email); 
+  const existingOtp = getOtp(email);
   if (existingOtp) {
     deleteOtp(email);
     console.log(`Old OTP deleted for ${email}`);
@@ -120,7 +132,7 @@ router.post("/verify-otp/:email", (req, res) => {
   }
 
   if (isOtpExpired(email)) {
-    deleteOtp(email); 
+    deleteOtp(email);
     return res.status(400).json({ message: "OTP has expired" });
   }
 

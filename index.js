@@ -9,6 +9,7 @@ import authRoutes from "./routes/auth.routes.js";
 import cartRoutes from "./routes/cart.routes.js"
 import reviewRoutes from "./routes/review.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import contactRoutes from './routes/contact.routes.js';
 import cors from 'cors'
 
 
@@ -43,6 +44,7 @@ app.use("/api/auth", authRoutes)
 app.use("/api/cart", cartRoutes)
 app.use("/api/review", reviewRoutes)
 app.use("/api/user", userRoutes)
+app.use('/api/contact', contactRoutes);
 
 
 

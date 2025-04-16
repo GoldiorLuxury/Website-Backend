@@ -3,14 +3,14 @@ const addReview = async (req, res) => {
   try {
     // Destructure the fields from the request body
     const {
-        product_id,
-        user_id,
-        rating,
-        parent,
-        text,
-        img_url,
-        video_url,
-        isRecommended,
+      product_id,
+      user_id,
+      rating,
+      parent,
+      text,
+      img_url,
+      video_url,
+      isRecommended,
     } = req.body;
 
     // Create a new review object with all required fields
@@ -25,6 +25,7 @@ const addReview = async (req, res) => {
       isRecommended: isRecommended || false, // Default to false if not provided
     });
 
+    console.log("review name", newReview)
     // Save the new review in the database
     await newReview.save();
 
@@ -54,9 +55,12 @@ const getReviewsByProductId = async (req, res) => {
   try {
     const { product_id } = req.params;
 
+
     const reviews = await Review.find({ product_id })
-      .populate("user_id") 
-      .sort({ createdAt: -1 }); 
+      .populate("user_id")
+      .sort({ createdAt: -1 });
+
+    console.log("review data", reviews)
 
     res.status(200).json(reviews);
   } catch (error) {

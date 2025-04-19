@@ -8,7 +8,11 @@ dotenv.config(); // Loads .env variables
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors()); // Allow requests from your frontend
+app.use(cors({
+    origin: 'http://43.204.39.70', // frontend's IP address
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+}));
 app.use(express.json()); // Parse JSON body
 
 app.post("/api/contact", async (req, res) => {

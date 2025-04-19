@@ -24,13 +24,16 @@ app.use(
     origin: [
       "http://localhost:5173",
       "https://goldior-frontend.vercel.app",
-      "http://13.234.37.8:3000"  // <-- Add your Lightsail frontend IP
+      "http://13.234.37.8:3000",
+      "http://goldiorluxury.com",
+      "http://43.204.39.70"
     ],
-    credentials: true,  // Allow cookies if needed
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"]
   })
 );
+
 
 
 

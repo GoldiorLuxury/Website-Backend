@@ -11,7 +11,25 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = ['http://goldiorluxury.com', 'http://43.204.39.70'];
 
 app.use(cors({
-    origin: '*', // TEMPORARY for debugging only
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+}));
+
+app.options('*', cors({
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
 }));
 
 
